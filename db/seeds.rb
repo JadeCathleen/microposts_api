@@ -7,3 +7,14 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+require "faker"
+
+if Rails.env.development?
+  puts "Seeding development data..."
+
+  10.times do |i|
+    Micropost.create!(title: Faker::Games::Pokemon.name, body: Faker::Games::Pokemon.move)
+  end
+
+  puts "#{Micropost.count} Microposts created"
+end

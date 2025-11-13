@@ -33,7 +33,15 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
-# gem "rack-cors"
+gem "rack-cors"
+
+# Installing Vue for frontend: TBD
+# # Inertia replaces your application's view layer. The views returned by your application are JavaScript page components. [https://inertiajs.com]
+# gem "inertia_rails"
+# # Brings Rails named routes to modern javascript (https://github.com/elmassimo/js_from_routes)
+# gem "js_from_routes", group: :development
+
+gem "vite_rails"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -48,5 +56,9 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-  gem 'rspec-rails', '~> 6.0'
+  # Use Rspec testing
+  gem "rspec-rails", "~> 6.0"
+
+  # Fake generator of strings for seed and testing
+  gem "faker"
 end
