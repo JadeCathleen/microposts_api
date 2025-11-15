@@ -4,13 +4,10 @@ class MicropostsController < ApplicationController
   # GET /microposts
   def index
     @microposts = Micropost.all
-
-    render json: @microposts
   end
 
   # GET /microposts/1
   def show
-    render json: @micropost
   end
 
   # POST /microposts
@@ -18,7 +15,7 @@ class MicropostsController < ApplicationController
     @micropost = Micropost.new(micropost_params)
 
     if @micropost.save
-      render json: @micropost, status: :created, location: @micropost
+      render json: @micropost, status: :created
     else
       render json: @micropost.errors, status: :unprocessable_content
     end

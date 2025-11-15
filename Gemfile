@@ -59,6 +59,9 @@ group :development, :test do
   # Use Rspec testing
   gem "rspec-rails", "~> 6.0"
 
+  # Adding binding.pry debug
+  gem 'pry-rails'
+
   # Fake generator of strings for seed and testing
   gem "faker"
 end
