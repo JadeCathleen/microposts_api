@@ -55,7 +55,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 
   # Use Rspec testing
-  gem "rspec-rails", "~> 6.0"
+  gem "rspec-rails", "~> 8.0"
 
   # Adding binding.pry debug
   gem "pry-rails"
