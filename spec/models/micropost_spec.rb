@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Micropost, type: :model do
-
   describe "Validations" do
     context "title" do
       it 'is invalid without a title' do
