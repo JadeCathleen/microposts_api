@@ -13,8 +13,8 @@ RSpec.describe "/microposts", type: :request do
       json_response = JSON.parse(response.body)
       expect(json_response["microposts"].count).to eq(2)
       expect(json_response["microposts"]).to match_array([
-        { "title" => micropost_1.title, "body" => micropost_1.body },
-        { "title" => micropost_2.title, "body" => micropost_2.body }
+        { "id" => micropost_1.id, "title" => micropost_1.title, "body" => micropost_1.body },
+        { "id" => micropost_2.id, "title" => micropost_2.title, "body" => micropost_2.body }
       ])
     end
   end
@@ -24,6 +24,7 @@ RSpec.describe "/microposts", type: :request do
       get micropost_url(micropost_1), as: :json
       expect(response).to be_successful
       expect(JSON.parse(response.body)).to eq({
+        "id" => micropost_1.id,
         "title" => micropost_1.title,
         "body" => micropost_1.body
       })
