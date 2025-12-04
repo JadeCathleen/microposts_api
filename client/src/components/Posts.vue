@@ -1,5 +1,6 @@
 <script setup>
   import { ref, onMounted } from "vue";
+  import Post from "./Post.vue"
 
   const API_URL = "http://localhost:3000/microposts"
   const posts = ref([])
@@ -61,15 +62,14 @@
     isEditing.value = false
   }
 
-  const deletePost = async(id) => {
-    await fetch(`${API_URL}/${id}`, {
+  const deletePost = async(post_id) => {
+    await fetch(`${API_URL}/${post_id}`, {
       method: 'DELETE'
     })
-    posts.value = posts.value.filter(post => post.id !== id)
+    posts.value = posts.value.filter(post => post.id !== post_id)
   }
 
-  const editPost = async(id) => {
-    const post = posts.value.find(post => post.id === id )
+  const editPost = async(post) => {
     isEditing.value = true
     title.value = post.title
     body.value = post.body
@@ -83,41 +83,34 @@
 </script>
 
 <template>
-  <div>
-    <h1>Posts</h1>
+  <div class="md:flex md:justify-between md:items-center">
+    <div class="flex flex-col md:me-8">
+      <h1 class="text-3xl font-bold mb-8">Posts</h1>
 
-    <!-- Create or Post -->
-     <input type="text"
-        v-model="title"
-        placeholder="Title"
-        class="input" />
-      <input type="text"
-        v-model="body"
-        placeholder="Body"
-        class="input" />
-
-      <template v-if="isEditing">
-        <button @click="updatePost">Update</button>
-        <button @click="cancelEdit">Cancel</button>
-      </template>
-      <button v-else @click="createPost">Create</button>
-
-      <div v-for="post in posts" :key="post.id">
-        <h5>[{{ post.id }}] {{ post.title }}</h5>
-        <p>{{ post.body }}</p>
-
-        <button class="me-2" @click="editPost(post.id)">Edit</button>
-        <button @click="deletePost(post.id)">Delete</button>
+      <div class="flex flex-col items-center">
+        <input type="text"
+          v-model="title"
+          placeholder="Title"
+          class=" bg-white/5 placeholder:text-gray-500 w-70 mb-2" />
+        <textarea type="text"
+          v-model="body"
+          placeholder="Body"
+          class=" bg-white/5 placeholder:text-gray-500 w-70" />
       </div>
+
+        <div class="mt-2 mb-4">
+          <template v-if="isEditing">
+            <button @click="updatePost" class="bg-indigo-500 hover:bg-indigo-400 me-2">Update</button>
+            <button @click="cancelEdit" class="bg-gray-300 hover:bg-gray-200 text-gray-600">Cancel</button>
+          </template>
+          <button class="bg-indigo-500 hover:bg-indigo-400" v-else @click="createPost">Create</button>
+        </div>
+    </div>
+
+    <div class="flex flex-col text-gray-300 overflow-y-auto w-100 h-200">
+      <template v-for="post in posts" :key="post.id">
+        <Post :post="post" @edit="editPost" @delete="deletePost"/>
+      </template>
+    </div>
   </div>
 </template>
-
-<style scoped>
-  .input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-  }
-</style>

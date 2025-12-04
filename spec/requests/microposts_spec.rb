@@ -31,8 +31,6 @@ RSpec.describe "/microposts", type: :request do
   end
 
   describe "POST /create" do
-
-
     context "with valid parameters" do
       it "creates a new Micropost and renders a JSON response with the new micropost" do
         expect {
