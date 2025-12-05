@@ -40,8 +40,10 @@ RSpec.describe "/microposts", type: :request do
         }.to change(Micropost, :count).by(1)
         expect(response).to have_http_status(:created)
         expect(Micropost.last.title).to eq("Hola!")
-        expect(JSON.parse(response.body)["title"]).to eq(valid_params[:title])
-        expect(JSON.parse(response.body)["body"]).to eq(valid_params[:body])
+        json_response = JSON.parse(response.body)
+        expect(json_response["micropost"]["title"]).to eq(valid_params[:title])
+        expect(json_response["micropost"]["body"]).to eq(valid_params[:body])
+        expect(json_response["flash"]["notice"]).to eq("Micropost created successfully!")
       end
     end
 
@@ -53,6 +55,7 @@ RSpec.describe "/microposts", type: :request do
         }.to change(Micropost, :count).by(0)
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
+        expect(JSON.parse(response.body)["flash"]["alert"]).to eq("Failed to create micropost (Title can't be blank)")
       end
     end
   end
@@ -64,8 +67,10 @@ RSpec.describe "/microposts", type: :request do
               params: { micropost: valid_params }, as: :json
         expect(micropost_1.reload.title).to eq("Hola!")
         expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)["title"]).to eq("Hola!")
-        expect(JSON.parse(response.body)["body"]).to eq("I am a brand new post!")
+        json_response = JSON.parse(response.body)
+        expect(json_response["micropost"]["title"]).to eq("Hola!")
+        expect(json_response["micropost"]["body"]).to eq("I am a brand new post!")
+        expect(json_response["flash"]["notice"]).to eq("Micropost updated successfully!")
       end
     end
 
@@ -75,6 +80,7 @@ RSpec.describe "/microposts", type: :request do
               params: { micropost: { title: "Hello" * 20 } }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
+        expect(JSON.parse(response.body)["flash"]["alert"]).to eq("Failed to update micropost (Title is too long (maximum is 50 characters))")
       end
     end
   end
