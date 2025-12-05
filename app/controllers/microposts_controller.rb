@@ -1,4 +1,6 @@
 class MicropostsController < ApplicationController
+  include ActionController::Flash
+
   before_action :set_micropost, only: %i[ show update destroy ]
 
   # GET /microposts
@@ -15,18 +17,22 @@ class MicropostsController < ApplicationController
     @micropost = Micropost.new(micropost_params)
 
     if @micropost.save
-      render json: @micropost, status: :created
+      flash[:notice] = "Micropost created successfully!"
+      render json: { micropost: @micropost, flash: flash.to_hash }, status: :created
     else
-      render json: @micropost.errors, status: :unprocessable_content
+      flash[:alert] = "Failed to create micropost (#{@micropost.errors.full_messages.join(', ')})"
+      render json: { flash: flash.to_hash }, status: :unprocessable_content
     end
   end
 
   # PATCH/PUT /microposts/1
   def update
     if @micropost.update(micropost_params)
-      render json: @micropost
+      flash[:notice] = "Micropost updated successfully!"
+      render json: { micropost: @micropost, flash: flash.to_hash }
     else
-      render json: @micropost.errors, status: :unprocessable_content
+      flash[:alert] = "Failed to update micropost (#{@micropost.errors.full_messages.join(', ')})"
+      render json: { flash: flash.to_hash }, status: :unprocessable_content
     end
   end
 

@@ -33,7 +33,8 @@
     })
 
     const data = await res.json()
-    posts.value.push(data)
+    console.log(data)
+    posts.value.push(data["micropost"])
     resetValues()
   }
 
@@ -52,7 +53,7 @@
 
     const data = await res.json()
     const post_index = posts.value.findIndex(post => post.id === post_id.value )
-    posts.value[post_index] = data
+    posts.value[post_index] = data["micropost"]
 
     resetValues()
     isEditing.value = false
