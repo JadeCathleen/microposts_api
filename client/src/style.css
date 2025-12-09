@@ -6,10 +6,12 @@
   font-weight: 400;
 }
 
+/* Links */
 a {
   cursor: pointer;
 }
 
+/* Body container */
 body {
   margin: 0;
   display: flex;
@@ -18,47 +20,56 @@ body {
   min-height: 100vh;
 }
 
+/* Titles */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-input, textarea {
+/* -------- Inputs / Textareas -------- */
+input,
+textarea {
   border-radius: var(--radius-md);
   padding: 0.5rem 0.875rem;
-  @supports (color: color-mix(in lab, red, red)) {
-      outline-color:
-        color-mix(in oklab, var(--color-white) 10%, transparent);
-    };
-  outline-offset: calc(1px * -1);
-  outline-style: var(--tw-outline-style);
+  /* Tailwind le gère aussi mais tu peux garder */
+  outline-style: solid;
   outline-width: 1px;
-}
-input:focus, input:focus-visible,
-textarea:focus, textarea:focus-visible {
+  outline-offset: -1px;
+
   @supports (color: color-mix(in lab, red, red)) {
-      outline-color:
-        color-mix(in oklab, var(--color-indigo-500), transparent);
-    }
-  outline-offset: calc(2px * -1);
-  outline-width: 2px;
+    outline-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+  }
 }
 
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible {
+  outline-width: 2px;
+  outline-offset: -2px;
+
+  @supports (color: color-mix(in lab, red, red)) {
+    outline-color: color-mix(in oklab, var(--color-indigo-500), transparent);
+  }
+}
+
+/* -------- Buttons -------- */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
   cursor: pointer;
+  font-family: inherit;
   transition: border-color 0.25s;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* -------- App container -------- */
 #app {
   width: 70vw;
   margin: 0 auto;

@@ -21,7 +21,7 @@ class MicropostsController < ApplicationController
       render json: { micropost: @micropost, flash: flash.to_hash }, status: :created
     else
       flash[:alert] = "Failed to create micropost (#{@micropost.errors.full_messages.join(', ')})"
-      render json: { flash: flash.to_hash }, status: :unprocessable_content
+      render json: { flash: flash.to_hash }, status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class MicropostsController < ApplicationController
       render json: { micropost: @micropost, flash: flash.to_hash }
     else
       flash[:alert] = "Failed to update micropost (#{@micropost.errors.full_messages.join(', ')})"
-      render json: { flash: flash.to_hash }, status: :unprocessable_content
+      render json: { flash: flash.to_hash }, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +44,7 @@ class MicropostsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_micropost
-      @micropost = Micropost.find(params.expect(:id))
+      @micropost = Micropost.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
