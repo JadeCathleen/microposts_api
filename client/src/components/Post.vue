@@ -1,7 +1,10 @@
 <script setup>
   import { ref, onMounted } from "vue";
   const props = defineProps({
-    post: Object
+    post: {
+      type: Object,
+      required: true
+    }
   })
   const emit = defineEmits(['edit', 'delete'])
   const handleEditEvent = () => {
