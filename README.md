@@ -3,8 +3,6 @@
 A simple CRUD application to manage microposts, built with a **Ruby on Rails API** backend and a **Vue 3 + Vite** frontend.
 This project demonstrates API versioning, form handling with Vue composables, and a clean separation between backend and frontend.
 
----
-
 ## 🚀 Features
 
 ### **Backend (Rails API)**
@@ -18,8 +16,6 @@ This project demonstrates API versioning, form handling with Vue composables, an
 - Vite
 - Reusable composables (`useAPI`, `useForm`, etc.)
 - Live validation on form inputs
-
----
 
 ## 📂 Project Structure
 
@@ -62,16 +58,12 @@ microposts_api/
 
 ```
 
----
-
 ## 🛠️ Requirements
 
 - Ruby 3.4.7
 - Rails 8.1.1
 - Node.js 20+
 - Yarn or npm
-
----
 
 ## ⚙️ Setup & Installation
 
@@ -99,9 +91,8 @@ The API will be available at:
 http://localhost:3000/api/v1/microposts
 ```
 
----
-
 ## 🎨 Frontend Setup (Vue app)
+
 Open a new terminal:
 ```bash
 cd client
@@ -115,9 +106,9 @@ Vue frontend will run on:
 ```bash
 http://localhost:5173
 ```
----
 
 ## 🔗 API Endpoints (Versioned)
+
 | Method | Endpoint                 | Description            |
 | ------ | ------------------------ | ---------------------- |
 | GET    | `/api/v1/microposts`     | List all microposts    |
@@ -126,31 +117,28 @@ http://localhost:5173
 | PATCH  | `/api/v1/microposts/:id` | Update a micropost     |
 | DELETE | `/api/v1/microposts/:id` | Delete a micropost     |
 
----
+
+## 🧪 Testing
+
+This project includes RSpec tests.
+To run them:
+```sh
+bundle exec rspec
+```
 
 ## 🧪 Development Notes
 
 * The API uses a custom Api::V1::BaseController inherited from ActionController::API
-
 * CORS may require configuring rack-cors in config/application.rb
-
 * Error handling and validation messaging is implemented in both Rails and Vue
-
 * Vue uses a reusable API composable useAPI() for all network calls
 
----
-
-🎯 Future Improvements
+## 🎯 Future Improvements
 
 * Add authentication (Devise + JWT)
-
 * Sorting & filtering
-
 * CI/CD setup
-
 * Deployment to Railway or Render or Fly.io
-
----
 
 ## 📄 License
 
