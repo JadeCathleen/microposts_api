@@ -1,4 +1,4 @@
-class MicropostsController < ApplicationController
+class Api::V1::MicropostsController < Api::V1::BaseController
   include ActionController::Flash
 
   before_action :set_micropost, only: %i[ show update destroy ]
