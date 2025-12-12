@@ -1,30 +1,30 @@
 require "rails_helper"
 
-RSpec.describe MicropostsController, type: :routing do
+RSpec.describe Api::V1::MicropostsController, type: :routing do
   describe "routing" do
     it "routes to #index" do
-      expect(get: "/microposts").to route_to("microposts#index")
+      expect(get: "api/v1/microposts").to route_to("api/v1/microposts#index")
     end
 
     it "routes to #show" do
-      expect(get: "/microposts/1").to route_to("microposts#show", id: "1")
+      expect(get: "api/v1/microposts/1").to route_to("api/v1/microposts#show", id: "1")
     end
 
 
     it "routes to #create" do
-      expect(post: "/microposts").to route_to("microposts#create")
+      expect(post: "api/v1/microposts").to route_to("api/v1/microposts#create")
     end
 
     it "routes to #update via PUT" do
-      expect(put: "/microposts/1").to route_to("microposts#update", id: "1")
+      expect(put: "api/v1/microposts/1").to route_to("api/v1/microposts#update", id: "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(patch: "/microposts/1").to route_to("microposts#update", id: "1")
+      expect(patch: "api/v1/microposts/1").to route_to("api/v1/microposts#update", id: "1")
     end
 
     it "routes to #destroy" do
-      expect(delete: "/microposts/1").to route_to("microposts#destroy", id: "1")
+      expect(delete: "api/v1/microposts/1").to route_to("api/v1/microposts#destroy", id: "1")
     end
   end
 end

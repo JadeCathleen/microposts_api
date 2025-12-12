@@ -10,6 +10,9 @@
 require "faker"
 
 if Rails.env.development?
+  puts "Destroying microposts in DB"
+  Micropost.destroy_all
+
   puts "Seeding development data..."
 
   10.times do |i|
