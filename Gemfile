@@ -35,6 +35,10 @@ gem "image_processing", "~> 1.2"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
+# Use Devise for API authentication with JWT
+gem 'devise'
+gem 'devise-jwt'
+
 # Installing Vue for frontend: TBD
 # # Inertia replaces your application's view layer. The views returned by your application are JavaScript page components. [https://inertiajs.com]
 # gem "inertia_rails"

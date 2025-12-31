@@ -12,11 +12,13 @@ require "faker"
 if Rails.env.development?
   puts "Destroying microposts in DB"
   Micropost.destroy_all
+  User.destroy_all
 
+  user = User.create!(email: "test@test.com", password: "test123456", username: "Test", admin: true)
   puts "Seeding development data..."
 
   10.times do |i|
-    Micropost.create!(title: Faker::Games::Pokemon.name, body: Faker::Games::Pokemon.move)
+    Micropost.create!(title: Faker::Games::Pokemon.name, body: Faker::Games::Pokemon.move, user: user)
   end
 
   puts "#{Micropost.count} Microposts created"

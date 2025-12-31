@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "api/v1/microposts", type: :request do
-  let!(:micropost_1)  { Micropost.create!(title: "Hello", body: "I am a post") }
-  let!(:micropost_2)  { Micropost.create!(title: "Hi!", body: " I am also a post") }
-  let(:valid_params) { { title: "Hola!", body: "I am a brand new post!" } }
-  let(:invalid_params) { { body: "I am missing a title" } }
+  let!(:user) { User.create!(email: "test@test.com", password: "test12345", username: "TestAdmin", admin: true)}
+  let!(:micropost_1)  { Micropost.create!(title: "Hello", body: "I am a post", user:) }
+  let!(:micropost_2)  { Micropost.create!(title: "Hi!", body: " I am also a post", user:) }
+  let(:valid_params) { { title: "Hola!", body: "I am a brand new post!", user_id: user.id } }
+  let(:invalid_params) { { body: "I am missing a title", user_id: user.id } }
 
   describe "GET /index" do
     it "renders a successful response and correct JSON response" do
