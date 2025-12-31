@@ -5,7 +5,7 @@ class Api::V1::MicropostsController < Api::V1::BaseController
 
   # GET /microposts
   def index
-    @microposts = Micropost.all
+    @microposts = Micropost.includes(:user).all
   end
 
   # GET /microposts/1
@@ -44,11 +44,11 @@ class Api::V1::MicropostsController < Api::V1::BaseController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_micropost
-      @micropost = Micropost.find(params[:id])
+      @micropost = Micropost.includes(:user).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def micropost_params
-      params.require(:micropost).permit(:id, :title, :body)
+      params.require(:micropost).permit(:id, :title, :body, :user_id)
     end
 end

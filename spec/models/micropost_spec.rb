@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Micropost, type: :model do
   describe "Validations" do
     context "title" do
-      it 'is invalid without a title' do
+      it "is invalid without a title" do
         post = Micropost.new(body: "Hello it's me")
         expect(post).to_not be_valid
         expect(post.errors[:title]).to include("can't be blank")
@@ -18,7 +18,7 @@ RSpec.describe Micropost, type: :model do
     end
 
     context "body" do
-      it 'is invalid without a body' do
+      it "is invalid without a body" do
         post = Micropost.new(title: "Hello it's me")
         expect(post).to_not be_valid
         expect(post.errors[:body]).to include("can't be blank")
@@ -29,6 +29,14 @@ RSpec.describe Micropost, type: :model do
 
         expect(post).not_to be_valid
         expect(post.errors[:body]).to include("is too long (maximum is 140 characters)")
+      end
+    end
+
+    context "user" do
+      it "is invalid without an user" do
+        post = Micropost.new(title: "Hello it's me", body: "Heyhey")
+        expect(post).to_not be_valid
+        expect(post.errors[:user]).to include("must exist")
       end
     end
   end
