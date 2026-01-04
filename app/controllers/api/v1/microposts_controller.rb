@@ -14,11 +14,11 @@ class Api::V1::MicropostsController < Api::V1::BaseController
 
   # POST /microposts
   def create
-    @micropost = Micropost.new(micropost_params)
+    @micropost = current_user.microposts.build(micropost_params)
 
     if @micropost.save
       flash[:notice] = "Micropost created successfully!"
-      render json: { micropost: @micropost, flash: flash.to_hash }, status: :created
+      render json: { micropost: @micropost, user: current_user, flash: flash.to_hash }, status: :created
     else
       flash[:alert] = "Failed to create micropost (#{@micropost.errors.full_messages.join(', ')})"
       render json: { flash: flash.to_hash }, status: :unprocessable_entity
@@ -29,7 +29,7 @@ class Api::V1::MicropostsController < Api::V1::BaseController
   def update
     if @micropost.update(micropost_params)
       flash[:notice] = "Micropost updated successfully!"
-      render json: { micropost: @micropost, flash: flash.to_hash }
+      render json: { micropost: @micropost, user: current_user, flash: flash.to_hash }
     else
       flash[:alert] = "Failed to update micropost (#{@micropost.errors.full_messages.join(', ')})"
       render json: { flash: flash.to_hash }, status: :unprocessable_entity
@@ -44,11 +44,11 @@ class Api::V1::MicropostsController < Api::V1::BaseController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_micropost
-      @micropost = Micropost.includes(:user).find(params[:id])
+      @micropost = current_user.microposts.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def micropost_params
-      params.require(:micropost).permit(:id, :title, :body, :user_id)
+      params.require(:micropost).permit(:title, :body)
     end
 end
