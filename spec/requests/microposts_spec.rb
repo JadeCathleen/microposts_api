@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "api/v1/microposts", type: :request do
-  let!(:user) { User.create!(email: "test@test.com", password: "test12345", username: "TestAdmin", admin: true)}
-  let!(:micropost_1)  { Micropost.create!(title: "Hello", body: "I am a post", user:) }
-  let!(:micropost_2)  { Micropost.create!(title: "Hi!", body: " I am also a post", user:) }
+  let!(:user) { FactoryBot.create(:user) }
+  let!(:micropost_1)  { FactoryBot.create(:micropost, user:) }
+  let!(:micropost_2)  { FactoryBot.create(:micropost, title: "Hi!", body: " I am also a post", user:) }
   let(:valid_params) { { title: "Hola!", body: "I am a brand new post!", user_id: user.id } }
   let(:invalid_params) { { body: "I am missing a title", user_id: user.id } }
 
@@ -14,8 +14,28 @@ RSpec.describe "api/v1/microposts", type: :request do
       json_response = JSON.parse(response.body)
       expect(json_response["microposts"].count).to eq(2)
       expect(json_response["microposts"]).to match_array([
-        { "id" => micropost_1.id, "title" => micropost_1.title, "body" => micropost_1.body },
-        { "id" => micropost_2.id, "title" => micropost_2.title, "body" => micropost_2.body }
+        {
+          "id" => micropost_1.id,
+          "title" => micropost_1.title,
+          "body" => micropost_1.body,
+          "created_at" => micropost_1.created_at.to_date.strftime("%B %d, %Y"),
+          "updated_at" => micropost_1.updated_at.to_date.strftime("%B %d, %Y"),
+          "user"  => {
+            "id" => user.id,
+            "username" => user.username
+          }
+        },
+        {
+          "id" => micropost_2.id,
+          "title" => micropost_2.title,
+          "body" => micropost_2.body,
+          "created_at" => micropost_2.created_at.to_date.strftime("%B %d, %Y"),
+          "updated_at" => micropost_2.updated_at.to_date.strftime("%B %d, %Y"),
+          "user"  => {
+            "id" => user.id,
+            "username" => user.username
+          }
+        }
       ])
     end
   end
@@ -27,7 +47,13 @@ RSpec.describe "api/v1/microposts", type: :request do
       expect(JSON.parse(response.body)).to eq({
         "id" => micropost_1.id,
         "title" => micropost_1.title,
-        "body" => micropost_1.body
+        "body" => micropost_1.body,
+        "created_at" => micropost_1.created_at.to_date.strftime("%B %d, %Y"),
+        "updated_at" => micropost_1.updated_at.to_date.strftime("%B %d, %Y"),
+        "user"  => {
+          "id" => user.id,
+          "username" => user.username
+        }
       })
     end
   end

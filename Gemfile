@@ -36,8 +36,8 @@ gem "image_processing", "~> 1.2"
 gem "rack-cors"
 
 # Use Devise for API authentication with JWT
-gem 'devise'
-gem 'devise-jwt'
+gem "devise"
+gem "devise-jwt"
 
 # Installing Vue for frontend: TBD
 # # Inertia replaces your application's view layer. The views returned by your application are JavaScript page components. [https://inertiajs.com]
@@ -61,8 +61,11 @@ group :development, :test do
   # Use Rspec testing
   gem "rspec-rails", "~> 8.0"
 
-  # Adding binding.pry debug
+  # Debug with binding.pry
   gem "pry-rails"
+
+  # Factory for tests
+  gem "factory_bot_rails"
 
   # Fake generator of strings for seed and testing
   gem "faker"
