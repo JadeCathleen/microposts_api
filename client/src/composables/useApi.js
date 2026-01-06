@@ -1,20 +1,32 @@
 import { ref } from "vue"
+import { useAuth } from "./useAuth";
 
 export function useApi(baseURL = "") {
   const loading = ref(false)
   const errors = ref([])
   const flash = ref("")
 
+  const { token } = useAuth();
+
   const request = async (url, { method = "GET", body = null } = {}) => {
     loading.value = true
     errors.value = []
     flash.value = ""
 
-    const options = { method, headers: {} }
+    const headers = {}
+
+    if (token.value) {
+      headers["Authorization"] = token.value
+    }
 
     if (body) {
-      options.headers["Content-Type"] = "application/json"
-      options.body = JSON.stringify(body)
+      headers["Content-Type"] = "application/json"
+    }
+
+    const options = {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : null
     }
 
     try {
