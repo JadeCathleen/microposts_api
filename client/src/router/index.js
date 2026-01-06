@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router"
-import { useAuth } from "../composables/useAuth"
 
 import LoginView from "../views/LoginView.vue"
 import SignUpView from "../views/SignUpView.vue"
@@ -34,13 +33,14 @@ const router = createRouter({
 
 /* 🔐 GLOBAL GUARD */
 router.beforeEach((to) => {
-  const { isAuthenticated } = useAuth()
+  const token = localStorage.getItem("token")
+  const isAuthenticated = !!token
 
-  if (to.meta.requiresAuth && !isAuthenticated.value) {
+  if (to.meta.requiresAuth && !isAuthenticated) {
     return "/login"
   }
 
-  if (to.meta.guestOnly && isAuthenticated.value) {
+  if (to.meta.guestOnly && isAuthenticated) {
     return "/"
   }
 })

@@ -47,7 +47,7 @@ const submit = async () => {
     <form class="flex flex-col items-center justify-center" @submit.prevent="submit">
       <input v-model="username" class="mb-1" type="text" placeholder="Username" />
       <input v-model="email" class="mb-1" type="email" placeholder="Email" />
-      <input v-model="password" class="mb-1" type="password" placeholder="Password" />
+      <input v-model="password" class="mb-1" type="password" autocomplete="new-password" placeholder="Password" />
       <input
         v-model="passwordConfirmation"
         class="mb-2"

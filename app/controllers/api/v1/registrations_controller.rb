@@ -1,4 +1,5 @@
 class Api::V1::RegistrationsController < Devise::RegistrationsController
+  include ActionController::Flash
   respond_to :json
 
   private

@@ -1,10 +1,13 @@
 <script setup>
+import { onMounted } from "vue"
 import { useAuth } from "../composables/useAuth"
 import { useRouter } from "vue-router"
 
-const { isAuthenticated, user, logout } = useAuth()
+const { user, isAuthenticated, logout } = useAuth()
 const router = useRouter()
-
+onMounted(() => {
+  console.log("Navbar mounted", user)
+})
 const handleLogout = async () => {
   await logout()
   router.push("/login")
@@ -20,7 +23,7 @@ const handleLogout = async () => {
     <div class="nav-right">
       <template v-if="isAuthenticated">
         <router-link to="/profile">Profile</router-link>
-        <span>{{ user.email }}</span>
+        <span>{{ user?.username }}</span>
         <button @click="handleLogout">Logout</button>
       </template>
 

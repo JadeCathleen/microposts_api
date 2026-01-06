@@ -1,6 +1,6 @@
 import { ref, computed } from "vue"
 
-const user = ref(JSON.parse(localStorage.getItem("user")))
+const user = ref(localStorage.getItem("user"))
 const token = ref(localStorage.getItem("token"))
 
 const isAuthenticated = computed(() => !!token.value)
@@ -17,17 +17,17 @@ export function useAuth() {
       })
     })
 
-    const data = await res.json()
-
     if (!res.ok) {
-      throw new Error(data.error || "Invalid credentials")
+      throw new Error("Invalid credentials")
     }
 
+    const data = await res.json()
+    console.log(res.headers)
     token.value = res.headers.get("authorization")
-    user.value = data.user
-
     localStorage.setItem("token", token.value)
+    user.value = data.user
     localStorage.setItem("user", JSON.stringify(user.value))
+    console.log("useAuth login", user.value, token.value, isAuthenticated.value)
   }
 
   const logout = async () => {

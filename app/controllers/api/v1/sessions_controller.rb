@@ -1,4 +1,5 @@
 class Api::V1::SessionsController < Devise::SessionsController
+  include ActionController::Flash
   respond_to :json
 
   private
@@ -9,8 +10,8 @@ class Api::V1::SessionsController < Devise::SessionsController
         id: resource.id,
         username: resource.username,
         email: resource.email
-      },
-      message: "Logged in successfully"
+      }
+      # message: "Logged in successfully"
     }, status: :ok
   end
 
