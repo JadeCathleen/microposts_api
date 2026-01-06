@@ -26,9 +26,13 @@ microposts_api/
 │   ├── controllers/
 │   │   └── api/
 │   │       └── v1/
-│   │           └── microposts_controller.rb
+│   │           ├── microposts_controller.rb
+|   |           ├── registrations_controller.rb
+|   |           └── sessions_controller.rb
 │   ├── models/
-│   │   └── micropost.rb
+│   │   ├── jwt_denylist.rb
+│   │   ├── micropost.rb
+│   │   └── user.rb
 │   └── views/
 │       └── api/
 │           └── v1/
@@ -42,15 +46,29 @@ microposts_api/
 │   │   ├── components/
 │   │   │   ├── Posts.vue
 │   │   │   ├── Post.vue
+│   │   │   ├── Navbar.vue
 │   │   │   └── FlashMessage.vue
 │   │   ├── composables/
 │   │   │   ├── useApi.js
+│   │   │   ├── useAuth.js
 │   │   │   ├── useForm.js
 │   │   │   └── usePosts.js
+│   │   ├── router/
+│   │   │   └── index.js
+│   │   ├── views/
+│   │   │   ├── LoginView.vue
+│   │   │   ├── PostsView.vue
+│   │   │   ├── ProfileView.vue
+│   │   │   └── SignUpView.vue
+│   │   ├── main.js
+│   │   ├── style.css
 │   │   └── App.vue
 │   └── vite.config.js
 │
 └── spec/
+    ├── factories/
+    |   ├── micropost.rb
+    |   └── user.rb
     ├── models/
     |   └── micropost_spec.rb
     └── requests/
@@ -135,7 +153,6 @@ bundle exec rspec
 
 ## 🎯 Future Improvements
 
-* Add authentication (Devise + JWT)
 * Sorting & filtering
 * CI/CD setup
 * Deployment to Railway or Render or Fly.io

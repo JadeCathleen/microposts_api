@@ -1,6 +1,4 @@
 class Api::V1::MicropostsController < Api::V1::BaseController
-  include ActionController::Flash
-
   before_action :set_micropost, only: %i[ show update destroy ]
 
   # GET /microposts
@@ -17,22 +15,34 @@ class Api::V1::MicropostsController < Api::V1::BaseController
     @micropost = current_user.microposts.build(micropost_params)
 
     if @micropost.save
-      flash[:notice] = "Micropost created successfully!"
-      render json: { micropost: @micropost, user: current_user, flash: flash.to_hash }, status: :created
+      render :show,
+      status: :created,
+      locals: {
+        flash: { notice: "Micropost created successfully!" }
+      }
     else
-      flash[:alert] = "Failed to create micropost (#{@micropost.errors.full_messages.join(', ')})"
-      render json: { flash: flash.to_hash }, status: :unprocessable_entity
+      render json: {
+        flash: {
+          alert: "Failed to create micropost (#{@micropost.errors.full_messages.join(', ')})"
+        }
+      }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /microposts/1
   def update
     if @micropost.update(micropost_params)
-      flash[:notice] = "Micropost updated successfully!"
-      render json: { micropost: @micropost, user: current_user, flash: flash.to_hash }
+      render :show,
+      status: :ok,
+      locals: {
+        flash: { notice: "Micropost updated successfully!" }
+      }
     else
-      flash[:alert] = "Failed to update micropost (#{@micropost.errors.full_messages.join(', ')})"
-      render json: { flash: flash.to_hash }, status: :unprocessable_entity
+      render json: {
+      flash: {
+        alert: "Failed to update micropost (#{@micropost.errors.full_messages.join(', ')})"
+      }
+    }, status: :unprocessable_entity
     end
   end
 

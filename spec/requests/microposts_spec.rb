@@ -57,14 +57,16 @@ RSpec.describe "api/v1/microposts", type: :request do
         get api_v1_micropost_url(micropost_1), headers: user_headers, as: :json
         expect(response).to be_successful
         expect(JSON.parse(response.body)).to eq({
-          "id" => micropost_1.id,
-          "title" => micropost_1.title,
-          "body" => micropost_1.body,
-          "created_at" => micropost_1.created_at.to_date.strftime("%B %d, %Y"),
-          "updated_at" => micropost_1.updated_at.to_date.strftime("%B %d, %Y"),
-          "user"  => {
-            "id" => user.id,
-            "username" => user.username
+          "micropost" => {
+            "id" => micropost_1.id,
+            "title" => micropost_1.title,
+            "body" => micropost_1.body,
+            "created_at" => micropost_1.created_at.to_date.strftime("%B %d, %Y"),
+            "updated_at" => micropost_1.updated_at.to_date.strftime("%B %d, %Y"),
+            "user"  => {
+              "id" => user.id,
+              "username" => user.username
+            }
           }
         })
       end
@@ -91,7 +93,7 @@ RSpec.describe "api/v1/microposts", type: :request do
         json_response = JSON.parse(response.body)
         expect(json_response["micropost"]["title"]).to eq(valid_params[:title])
         expect(json_response["micropost"]["body"]).to eq(valid_params[:body])
-        expect(json_response["user"]["id"]).to eq(user.id)
+        expect(json_response["micropost"]["user"]["id"]).to eq(user.id)
         expect(json_response["flash"]["notice"]).to eq("Micropost created successfully!")
       end
 

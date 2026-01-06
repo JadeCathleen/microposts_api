@@ -32,7 +32,7 @@
 
 <template>
   <div class="md:flex md:justify-between md:items-center">
-    <div class="flex flex-col md:me-8">
+    <div class="flex flex-col justify-center items-center md:me-8">
       <h1 class="text-3xl font-bold mb-8">Posts</h1>
 
       <!-- Global flash + errors -->
@@ -87,7 +87,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col text-gray-300 overflow-y-auto w-100 h-200">
+    <div class="flex flex-col text-gray-300 overflow-y-auto w-100 h-100">
       <template v-for="post in posts" :key="post.id">
         <Post :post="post" @edit="editPost" @delete="deletePost" />
       </template>
