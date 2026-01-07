@@ -3,6 +3,15 @@
 A simple CRUD application to manage microposts, built with a **Ruby on Rails API** backend and a **Vue 3 + Vite** frontend.
 This project demonstrates API versioning, form handling with Vue composables, and a clean separation between backend and frontend.
 
+## Why this project?
+
+This project was built to demonstrate:
+- A Rails API-only backend with JWT authentication
+- Clean separation of concerns between frontend and backend
+- Vue 3 composables for reusable logic
+- Real-world authentication and authorization flows
+- API versioning and scalable architecture
+
 ## 🚀 Features
 
 ### **Backend (Rails API)**
