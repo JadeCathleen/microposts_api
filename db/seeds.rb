@@ -1,25 +1,57 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-require "faker"
+STDOUT.sync = true
 
-if Rails.env.development?
-  puts "Destroying microposts in DB"
-  Micropost.destroy_all
-  User.destroy_all
-
-  user = User.create!(email: "test@test.com", password: "test123456", username: "Test", admin: true)
-  puts "Seeding development data..."
-
-  10.times do |i|
-    Micropost.create!(title: Faker::Games::Pokemon.name, body: Faker::Games::Pokemon.move, user: user)
-  end
-
-  puts "#{Micropost.count} Microposts created"
+# Faker only in dev/test
+begin
+  require "faker"
+rescue LoadError
+  puts "Faker not available (likely production) — using fallback values."
 end
+
+puts "===> Seeding start"
+
+# Create or update a stable admin user
+admin = User.find_or_create_by!(email: "test@test.com") do |user|
+  user.password = "password"
+  user.username = "TestUser"
+  user.admin = true
+end
+
+# Ensure attributes stay correct even if record already existed
+admin.update!(
+  username: "TestUser",
+  admin: true
+)
+
+puts "===> Admin user ready: #{admin.email}"
+
+# Seed a small set of microposts WITHOUT destroying prod data
+# Create stable unique titles to keep it idempotent.
+existing = Micropost.where(user: admin).count
+target = 10
+
+if existing < target
+  (existing...target).each do |i|
+    title =
+      if defined?(Faker)
+        "#{Faker::Games::Pokemon.name}-#{i}"
+      else
+        "Seed Micropost #{i}"
+      end
+
+    body =
+      if defined?(Faker)
+        Faker::Games::Pokemon.move
+      else
+        "This is seeded content #{i}"
+      end
+
+    Micropost.create!(
+      title: title,
+      body: body,
+      user: admin
+    )
+  end
+end
+
+puts "===> Microposts for admin: #{Micropost.where(user: admin).count}"
+puts "===> Seeding done"
