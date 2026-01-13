@@ -2,9 +2,9 @@ import { ref } from 'vue'
 import { useApi } from './useApi'
 import { useForm } from './useForm'
 
-export function usePosts(baseURL = "http://localhost:3000/api/v1") {
+export function usePosts() {
 
-  const { errors: fetchErrors, flash, request } = useApi(baseURL)
+  const { errors: fetchErrors, flash, request } = useApi()
   const {
     title,
     body,

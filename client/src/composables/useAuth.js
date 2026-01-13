@@ -1,4 +1,5 @@
 import { ref, computed, watch } from "vue"
+import apiBaseURL from "./useApiBase";
 
 const user = ref(null)
 const token = ref(localStorage.getItem("token"))
@@ -20,7 +21,7 @@ watch(user, (val) => {
 
 export function useAuth() {
   const login = async (email, password) => {
-    const res = await fetch("http://localhost:3000/api/v1/login", {
+    const res = await fetch(`${apiBaseURL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -42,7 +43,7 @@ export function useAuth() {
   }
 
   const logout = async () => {
-    await fetch("http://localhost:3000/api/v1/logout", {
+    await fetch(`${apiBaseURL}/logout`, {
       method: "DELETE",
       headers: {
         Authorization: token.value

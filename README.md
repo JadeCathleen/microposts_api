@@ -134,6 +134,15 @@ Vue frontend will run on:
 http://localhost:5173
 ```
 
+### **Frontend build for deployment**
+The Vue app needs to be built into Rails `public/` so the production server can serve `index.html` and the compiled assets:
+```bash
+cd client
+npm install
+npm run build
+```
+This writes `public/index.html` and the bundled assets (e.g. `public/assets/*`). Ensure your deploy process runs this step before booting Rails.
+
 ## 🔗 API Endpoints (Versioned)
 
 | Method | Endpoint                 | Description            |

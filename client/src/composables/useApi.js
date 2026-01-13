@@ -1,7 +1,8 @@
 import { ref } from "vue"
 import { useAuth } from "./useAuth";
+import apiBaseURL from "./useApiBase";
 
-export function useApi(baseURL = "") {
+export function useApi(baseURL = apiBaseURL) {
   const loading = ref(false)
   const errors = ref([])
   const flash = ref("")

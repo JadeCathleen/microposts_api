@@ -2,6 +2,7 @@
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useAuth } from "../composables/useAuth"
+import apiBaseURL from "../composables/useApiBase";
 
 const username = ref("")
 const email = ref("")
@@ -14,7 +15,7 @@ const { login } = useAuth()
 
 const submit = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/v1/sign_up", {
+    const res = await fetch(`${apiBaseURL}/sign_up`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

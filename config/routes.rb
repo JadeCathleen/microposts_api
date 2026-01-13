@@ -20,5 +20,6 @@ Rails.application.routes.draw do
   get "/health", to: proc { [ 200, { "Content-Type" => "application/json" }, [ '{"ok":true}' ] ] }
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "frontend#index"
+  get "*path", to: "frontend#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 end
