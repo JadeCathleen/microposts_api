@@ -1,7 +1,17 @@
 # Microposts API (Rails + Vue 3)
 
-A simple CRUD application to manage microposts, built with a **Ruby on Rails API** backend and a **Vue 3 + Vite** frontend.
-This project demonstrates API versioning, form handling with Vue composables, and a clean separation between backend and frontend.
+A full-stack CRUD application to manage microposts, built with a **Ruby on Rails API** backend and a **Vue 3 + Vite** frontend.
+
+This project demonstrates API versioning, JWT authentication, a clean separation between backend and frontend, and a real-world deployment setup.
+
+## 🌍 Live Demo
+
+- Frontend (Vue 3)
+👉 https://micropost-api.netlify.app/
+
+- Backend API (Rails)
+👉 https://microposts-api.onrender.com
+👉 Example protected endpoint: /api/v1/microposts
 
 ## Why this project?
 
@@ -11,20 +21,25 @@ This project was built to demonstrate:
 - Vue 3 composables for reusable logic
 - Real-world authentication and authorization flows
 - API versioning and scalable architecture
+- Deployment of a decoupled frontend and backend
 
 ## 🚀 Features
 
 ### **Backend (Rails API)**
-- Rails 7 API-only architecture
+- Rails API-only architecture
+- JWT authentication with Devise and denylist
 - API versioning: `api/v1/...`
 - Controllers under `app/controllers/api/v1/`
 - Microposts CRUD endpoints
+- RSpec tests
 
 ### **Frontend (Vue 3)**
 - Vue 3 Composition API
 - Vite
+- Vue Router
 - Reusable composables (`useAPI`, `useForm`, etc.)
-- Live validation on form inputs
+- JWT-based authentication
+- Reactive navigation and protected routes
 
 ## 📂 Project Structure
 
@@ -133,15 +148,34 @@ Vue frontend will run on:
 ```bash
 http://localhost:5173
 ```
-
-### **Frontend build for deployment**
-The Vue app needs to be built into Rails `public/` so the production server can serve `index.html` and the compiled assets:
-```bash
-cd client
-npm install
-npm run build
+Make sure the frontend points to the API using:
+```env
+VITE_API_URL=http://localhost:3000
 ```
-This writes `public/index.html` and the bundled assets (e.g. `public/assets/*`). Ensure your deploy process runs this step before booting Rails.
+
+## 🚀 Deployment
+
+### Backend – Render
+
+* Deployed as a Rails API-only service
+* Database migrations and seed run during the build
+* JWT authentication enabled
+* Hosted at:
+👉 https://microposts-api.onrender.com
+
+### Frontend – Netlify
+
+* Built with Vite
+* Deployed as a static SPA
+* Environment variable:
+  ```env
+  VITE_API_URL=https://microposts-api.onrender.com
+  ````
+* Vue Router configured with Netlify redirects
+* Hosted at:
+👉 https://micropost-api.netlify.app/
+
+This setup allows the frontend and backend to scale independently.
 
 ## 🔗 API Endpoints (Versioned)
 
@@ -156,7 +190,6 @@ This writes `public/index.html` and the bundled assets (e.g. `public/assets/*`).
 
 ## 🧪 Testing
 
-This project includes RSpec tests.
 To run them:
 ```sh
 bundle exec rspec
@@ -164,16 +197,19 @@ bundle exec rspec
 
 ## 🧪 Development Notes
 
-* The API uses a custom Api::V1::BaseController inherited from ActionController::API
-* CORS may require configuring rack-cors in config/application.rb
-* Error handling and validation messaging is implemented in both Rails and Vue
-* Vue uses a reusable API composable useAPI() for all network calls
+* API inherits from a custom Api::V1::BaseController
+* CORS is configured for cross-origin frontend access
+* Authentication handled via JWT stored client-side
+* Vue uses composables for API calls and auth state
+* Navbar reacts to authentication state changes
 
 ## 🎯 Future Improvements
 
 * Sorting & filtering
-* CI/CD setup
-* Deployment to Railway or Render or Fly.io
+* Pagination
+* CI/CD pipeline
+* Role-based authorization
+* Refresh token rotation
 
 ## 📄 License
 
