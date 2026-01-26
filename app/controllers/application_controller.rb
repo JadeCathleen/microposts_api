@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include ActionController::MimeResponds
+  include Pagy::Method
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected

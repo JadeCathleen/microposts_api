@@ -20,6 +20,7 @@ export function usePosts() {
 
   // Local state
   const posts = ref([])
+  const pagy = ref({ page: 1, pages: 1, prev: null, next: null, limit: 5, count: 0 })
   const isEditing = ref(false)
   const postId = ref(null)
   const errors = ref([])
@@ -31,8 +32,9 @@ export function usePosts() {
   }
 
   /* ---- FETCH ---- */
-  const fetchPosts = async () => {
-    const { ok, data } = await request("/microposts")
+  const fetchPosts = async (page = 1) => {
+    const perPage = pagy.value.limit ?? 5
+    const { ok, data } = await request(`/microposts?page=${page}&per_page=${perPage}`)
 
     if (!ok) {
       errors.value.push(...fetchErrors.value)
@@ -40,6 +42,7 @@ export function usePosts() {
     }
 
     posts.value = data.microposts || []
+    pagy.value = data.pagy || pagy.value
   }
 
   /* ---- CREATE ---- */
@@ -53,7 +56,7 @@ export function usePosts() {
 
     if (!ok) return
 
-    posts.value.push(data.micropost)
+    await fetchPosts(1)
     setFlash(data.flash?.notice || "Created")
     resetValues()
   }
@@ -83,7 +86,7 @@ export function usePosts() {
 
     if (!ok) return
 
-    posts.value = posts.value.filter(p => p.id !== id)
+    await fetchPosts(pagy.value.page)
     setFlash("Deleted")
   }
 
@@ -110,8 +113,17 @@ export function usePosts() {
     errors.value = []
   }
 
+  const setPerPage = async (perPage) => {
+    const n = Number(perPage)
+    if (![5, 10, 15, 20].includes(n)) return
+
+    pagy.value = { ...pagy.value, limit: n }
+    await fetchPosts(1)
+  }
+
   return {
     posts,
+    pagy,
     errors,
     flashMessage,
     isEditing,
@@ -130,6 +142,7 @@ export function usePosts() {
     updatePost,
     deletePost,
     editPost,
-    cancelEdit
+    cancelEdit,
+    setPerPage
   }
 }

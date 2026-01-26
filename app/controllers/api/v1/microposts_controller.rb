@@ -3,7 +3,13 @@ class Api::V1::MicropostsController < Api::V1::BaseController
 
   # GET /microposts
   def index
-    @microposts = Micropost.includes(:user).all
+    scope = Micropost.includes(:user).order(created_at: :desc)
+
+    per_page = params[:per_page].to_i
+    per_page = 5 if per_page <= 0
+    per_page = 20 if per_page > 20
+
+    @pagy, @microposts = pagy(scope, limit: per_page)
   end
 
   # GET /microposts/1

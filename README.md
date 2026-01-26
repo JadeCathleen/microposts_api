@@ -206,7 +206,6 @@ bundle exec rspec
 ## 🎯 Future Improvements
 
 * Sorting & filtering
-* Pagination
 * CI/CD pipeline
 * Role-based authorization
 * Refresh token rotation

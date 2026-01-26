@@ -40,11 +40,8 @@ gem "rack-cors"
 gem "devise"
 gem "devise-jwt"
 
-# Installing Vue for frontend: TBD
-# # Inertia replaces your application's view layer. The views returned by your application are JavaScript page components. [https://inertiajs.com]
-# gem "inertia_rails"
-# # Brings Rails named routes to modern javascript (https://github.com/elmassimo/js_from_routes)
-# gem "js_from_routes", group: :development
+# Pagination library
+gem "pagy"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
