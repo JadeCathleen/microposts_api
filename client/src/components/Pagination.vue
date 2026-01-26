@@ -3,7 +3,7 @@ import { computed } from "vue"
 
 const props = defineProps({
   pagy: { type: Object, required: true }, // { page, pages, prev, next }
-  window: { type: Number, default: 1 },
+  pageWindow: { type: Number, default: 1 },
   perPageOptions: { type: Array, default: () => [5, 10, 15, 20] },
 })
 
@@ -28,7 +28,7 @@ const items = computed(() => {
   const current = page.value
   if (total <= 1) return []
 
-  const w = Math.max(0, props.window)
+  const w = Math.max(0, props.pageWindow)
   const set = new Set([1, total])
   for (let p = current - w; p <= current + w; p++) {
     if (p >= 1 && p <= total) set.add(p)
@@ -54,7 +54,7 @@ const items = computed(() => {
          Posts / page:
        </label>
        <select
-         v-model="perPage"
+         :value="perPage"
          @change="emit('per-page-change', Number($event.target.value))"
          class="bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-gray-600"
        >
