@@ -3,10 +3,12 @@
   import { usePosts } from "../composables/usePosts"
   import Post from "./Post.vue"
   import FlashMessage from "./FlashMessage.vue"
+  import Pagination from "./Pagination.vue"
 
   const postsState = usePosts()
   const {
     posts,
+    pagy,
     errors,
     flashMessage,
     title,
@@ -24,7 +26,8 @@
     updatePost,
     deletePost,
     editPost,
-    cancelEdit
+    cancelEdit,
+    setPerPage
   } = postsState
 
   onMounted(fetchPosts)
@@ -87,10 +90,20 @@
       </div>
     </div>
 
-    <div class="flex flex-col text-gray-300 overflow-y-auto w-100 h-100">
-      <template v-for="post in posts" :key="post.id">
-        <Post :post="post" @edit="editPost" @delete="deletePost" />
-      </template>
+    <div class="flex flex-col text-gray-300 w-100 h-100">
+      <div class="flex-1 overflow-y-auto">
+        <template v-for="post in posts" :key="post.id">
+          <Post :post="post" @edit="editPost" @delete="deletePost" />
+        </template>
+      </div>
+
+      <div class="shrink-0 pt-3">
+        <Pagination
+          :pagy="pagy"
+          @change="(p) => { fetchPosts(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }"
+          @per-page-change="(n) => { setPerPage(n); window.scrollTo({ top: 0, behavior: 'smooth' }) }"
+        />
+      </div>
     </div>
   </div>
 </template>
