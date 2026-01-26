@@ -1,5 +1,5 @@
 <script setup>
-  import { onMounted } from "vue"
+  import { onMounted, nextTick, ref } from "vue"
   import { usePosts } from "../composables/usePosts"
   import Post from "./Post.vue"
   import FlashMessage from "./FlashMessage.vue"
@@ -29,6 +29,23 @@
     cancelEdit,
     setPerPage
   } = postsState
+
+  const listRef = ref(null)
+
+  const scrollListTop = async () => {
+    await nextTick()
+    listRef.value?.scrollTo?.({ top: 0, behavior: "smooth" })
+  }
+
+  const onPageChange = async (page) => {
+    await fetchPosts(page)
+    await scrollListTop()
+  }
+
+  const onPerPageChange = async (perPage) => {
+    await setPerPage(perPage)
+    await scrollListTop()
+  }
 
   onMounted(fetchPosts)
 </script>
@@ -91,7 +108,7 @@
     </div>
 
     <div class="flex flex-col text-gray-300 w-100 h-100">
-      <div class="flex-1 overflow-y-auto">
+      <div class="flex-1 overflow-y-auto" ref="listRef">
         <template v-for="post in posts" :key="post.id">
           <Post :post="post" @edit="editPost" @delete="deletePost" />
         </template>
@@ -100,8 +117,8 @@
       <div class="shrink-0 pt-3">
         <Pagination
           :pagy="pagy"
-          @change="(p) => { fetchPosts(p); window.scrollTo({ top: 0, behavior: 'smooth' }) }"
-          @per-page-change="(n) => { setPerPage(n); window.scrollTo({ top: 0, behavior: 'smooth' }) }"
+          @change="(p) => onPageChange(p)"
+          @per-page-change="(n) => onPerPageChange(n)"
         />
       </div>
     </div>
