@@ -29,7 +29,6 @@ input,
 textarea {
   border-radius: var(--radius-md);
   padding: 0.5rem 0.875rem;
-  /* Tailwind le gère aussi mais tu peux garder */
   outline-style: solid;
   outline-width: 1px;
   outline-offset: -1px;

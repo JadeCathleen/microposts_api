@@ -3,8 +3,27 @@ class Api::V1::MicropostsController < Api::V1::BaseController
 
   # GET /microposts
   def index
-    scope = Micropost.includes(:user).order(created_at: :desc)
+    scope = Micropost.includes(:user)
 
+    # --- Filtering ---
+    if params[:q].present?
+      scope = scope.where("microposts.title ILIKE ? OR microposts.body ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
+    end
+
+    if params[:user_id].present?
+      scope = scope.where(user_id: params[:user_id])
+    end
+
+    # --- Sorting ---
+    scope = case params[:sort]
+    when "created_at_desc"  then scope.order(created_at: :desc)
+    when "created_at_asc"   then scope.order(created_at: :asc)
+    when "title_asc"       then scope.order("LOWER(title) ASC")
+    when "title_desc"      then scope.order("LOWER(title) DESC")
+    else               scope.order(created_at: :desc)
+    end
+
+    # --- Pagination ---
     per_page = params[:per_page].to_i
     per_page = 5 if per_page <= 0
     per_page = 20 if per_page > 20

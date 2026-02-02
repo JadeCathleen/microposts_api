@@ -4,7 +4,7 @@ RSpec.describe "api/v1/microposts", type: :request do
   let!(:user) { FactoryBot.create(:user) }
   let!(:other_user) { FactoryBot.create(:user) }
   let!(:user_headers) { Devise::JWT::TestHelpers.auth_headers({}, user) }
-  let!(:micropost_1)  { FactoryBot.create(:micropost, user:) }
+  let!(:micropost_1)  { FactoryBot.create(:micropost, user:, title: "This is new!", body: "I am a new micropost") }
   let!(:micropost_2)  { FactoryBot.create(:micropost, title: "Hi!", body: " I am also a post", user: other_user) }
   let(:valid_params) { { title: "Hola!", body: "I am a brand new post!", user_id: user.id } }
   let(:invalid_params) { { body: "I am missing a title", user_id: user.id } }
@@ -40,6 +40,58 @@ RSpec.describe "api/v1/microposts", type: :request do
             }
           }
         ])
+      end
+
+      context "sorting" do
+        it "sorts by title ascending" do
+          get api_v1_microposts_url(sort: "title_asc"), headers: user_headers, as: :json
+          expect(response).to be_successful
+          json_response = JSON.parse(response.body)
+          expect(json_response["microposts"].first["id"]).to eq(micropost_2.id)
+          expect(json_response["microposts"].last["id"]).to eq(micropost_1.id)
+        end
+
+        it "sorts by title descending" do
+          get api_v1_microposts_url(sort: "title_desc"), headers: user_headers, as: :json
+          expect(response).to be_successful
+          json_response = JSON.parse(response.body)
+          expect(json_response["microposts"].first["id"]).to eq(micropost_1.id)
+          expect(json_response["microposts"].last["id"]).to eq(micropost_2.id)
+        end
+
+        it "sorts by created_at ascending" do
+          get api_v1_microposts_url(sort: "created_at_asc"), headers: user_headers, as: :json
+          expect(response).to be_successful
+          json_response = JSON.parse(response.body)
+          expect(json_response["microposts"].first["id"]).to eq(micropost_1.id)
+          expect(json_response["microposts"].last["id"]).to eq(micropost_2.id)
+        end
+
+        it "sorts by created_at descending" do
+          get api_v1_microposts_url(sort: "created_at_desc"), headers: user_headers, as: :json
+          expect(response).to be_successful
+          json_response = JSON.parse(response.body)
+          expect(json_response["microposts"].first["id"]).to eq(micropost_2.id)
+          expect(json_response["microposts"].last["id"]).to eq(micropost_1.id)
+        end
+      end
+
+      context "filtering" do
+        it "filters by search query" do
+          get api_v1_microposts_url(q: "also"), headers: user_headers, as: :json
+          expect(response).to be_successful
+          json_response = JSON.parse(response.body)
+          expect(json_response["microposts"].count).to eq(1)
+          expect(json_response["microposts"].first["id"]).to eq(micropost_2.id)
+        end
+
+        it "filters by user_id" do
+          get api_v1_microposts_url(user_id: user.id), headers: user_headers, as: :json
+          expect(response).to be_successful
+          json_response = JSON.parse(response.body)
+          expect(json_response["microposts"].count).to eq(1)
+          expect(json_response["microposts"].first["id"]).to eq(micropost_1.id)
+        end
       end
     end
 
