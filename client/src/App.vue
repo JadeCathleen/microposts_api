@@ -5,7 +5,7 @@ import Navbar from './components/Navbar.vue';
 <template>
   <div>
     <Navbar class="bg-gray-800 border-b border-gray-600" />
-    <main class="flex justify-center items-center min-h-[calc(100vh-56px)]">
+    <main class="mt-14 min-h-[calc(100vh-56px)] flex justify-center items-center px-4 py-6 md:px-8">
       <router-view />
     </main>
   </div>
