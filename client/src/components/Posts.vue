@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col text-gray-300 w-100 h-100">
+    <div class="flex flex-col text-gray-300 w-100 h-[50vh] min-h-[420px] md:h-[75vh]">
       <!-- Search + Sort -->
       <div class="flex items-center gap-2 mb-3">
         <!-- Search input -->
