@@ -27,10 +27,14 @@
     deletePost,
     editPost,
     cancelEdit,
-    setPerPage
+    setPerPage,
+    setSort,
+    setQuery
   } = postsState
 
   const listRef = ref(null)
+  const search = ref("")
+  const sort = ref("created_at_desc")
 
   const scrollListTop = async () => {
     await nextTick()
@@ -44,6 +48,22 @@
 
   const onPerPageChange = async (perPage) => {
     await setPerPage(perPage)
+    await scrollListTop()
+  }
+
+  const applySort = async () => {
+    await setSort(sort.value)
+    await scrollListTop()
+  }
+
+  const applySearch = async () => {
+    await setQuery(search.value)
+    await scrollListTop()
+  }
+
+  const clearSearch = async () => {
+    search.value = ""
+    await setQuery("")
     await scrollListTop()
   }
 
@@ -108,6 +128,46 @@
     </div>
 
     <div class="flex flex-col text-gray-300 w-100 h-100">
+      <!-- Search + Sort -->
+      <div class="flex items-center gap-2 mb-3">
+        <!-- Search input -->
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none"></i>
+
+          <button
+            v-if="search"
+            type="button"
+            @click="clearSearch"
+            class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition"
+            aria-label="Clear search"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <input
+            v-model="search"
+            placeholder="Title or Body..."
+            class="search-input w-full bg-white/5 border border-white/10 rounded-lg py-2 !pl-9 pr-3 text-gray-200 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+            @keydown.enter="applySearch"
+          />
+        </div>
+
+        <!-- Sort select -->
+        <div class="relative">
+          <i class="fa-solid fa-filter absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+
+          <select
+            v-model="sort"
+            @change="applySort"
+            class="bg-white/5 border border-white/10 rounded-lg py-2 pl-7 pr-2 text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+          >
+            <option value="created_at_desc">Newest</option>
+            <option value="created_at_asc">Oldest</option>
+            <option value="title_asc">A → Z</option>
+            <option value="title_desc">Z → A</option>
+          </select>
+        </div>
+      </div>
       <div class="flex-1 overflow-y-auto" ref="listRef">
         <template v-for="post in posts" :key="post.id">
           <Post :post="post" @edit="editPost" @delete="deletePost" />

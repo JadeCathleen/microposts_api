@@ -31,10 +31,28 @@ export function usePosts() {
     setTimeout(() => (flashMessage.value = ""), timeout)
   }
 
+  const filters = ref({
+    q: "",
+    sort: "created_at_desc",
+    user_id: null,
+  })
+
+  const buildQuery = (page) => {
+    const params = new URLSearchParams()
+
+    params.set("page", String(page))
+    params.set("per_page", String(pagy.value.limit ?? 5))
+    params.set("sort", filters.value.sort)
+
+    if (filters.value.q?.trim()) params.set("q", filters.value.q.trim())
+    if (filters.value.user_id) params.set("user_id", String(filters.value.user_id))
+
+    return `/microposts?${params.toString()}`
+  }
+
   /* ---- FETCH ---- */
   const fetchPosts = async (page = 1) => {
-    const perPage = pagy.value.limit ?? 5
-    const { ok, data } = await request(`/microposts?page=${page}&per_page=${perPage}`)
+    const { ok, data } = await request(buildQuery(page))
 
     if (!ok) {
       errors.value.push(...fetchErrors.value)
@@ -121,6 +139,20 @@ export function usePosts() {
     await fetchPosts(1)
   }
 
+  const setSort = async (sort) => {
+    const allowedSort = ["created_at_asc", "created_at_desc", "title_asc", "title_desc"]
+
+    if (!allowedSort.includes(sort)) return
+    console.log(sort)
+    filters.value.sort = sort
+    await fetchPosts(1)
+  }
+
+  const setQuery = async (q) => {
+    filters.value.q = q
+    await fetchPosts(1)
+  }
+
   return {
     posts,
     pagy,
@@ -143,6 +175,8 @@ export function usePosts() {
     deletePost,
     editPost,
     cancelEdit,
-    setPerPage
+    setPerPage,
+    setSort,
+    setQuery,
   }
 }
